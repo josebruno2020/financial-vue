@@ -21,11 +21,11 @@
             prepend-icon="mdi-view-dashboard"
             title="Home"
             value="home"
-            :active="currentRoute === 'home'"
+            :active="currentRoute == 'home'"
             @click="toRoute('home')"
           ></v-list-item>
           <v-list-item
-            prepend-icon="mdi-forum"
+            prepend-icon="mdi-format-list-bulleted"
             title="Categorias"
             value="categories"
             @click="toRoute('categories')"
@@ -54,13 +54,16 @@ const currentRoute = ref(null)
 const route = useRoute()
 const router = useRouter()
 
-//console.log(useRoute())
-
 function toRoute(name: string) {
   console.log(router)
   router.push({ name })
 }
 </script>
 
-<style scoped>
+<style>
+.floating-button {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+}
 </style>

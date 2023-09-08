@@ -64,7 +64,7 @@
     <v-sheet class="totals" elevation="8">
       <v-slide-group show-arrows class="pa-4">
         <v-slide-group-item v-for="({ name, total, id }, index) in totals" :key="index">
-          <v-card width="200" color="grey-lighten-1" :class="['ma-4']" @click="clickOnListCard(id)">
+          <v-card width="200" color="grey-lighten-1" :class="['ma-4']" @click="clickOnListCard(id)" variant="tonal">
             <template v-slot:title>{{ name }}</template>
             <v-card-text
               ><p class="balance">{{ formatCurrency(total) }}</p></v-card-text
@@ -81,7 +81,7 @@
     <v-sheet class="totals" elevation="8">
       <v-slide-group show-arrows class="pa-4">
         <v-slide-group-item v-for="({ name, total, id }, index) in inflowTotals" :key="index">
-          <v-card width="200" color="grey-lighten-1" :class="['ma-4']" @click="clickOnListCard(id)">
+          <v-card width="200" color="grey-lighten-1" :class="['ma-4']" @click="clickOnListCard(id)" variant="tonal">
             <template v-slot:title>{{ name }}</template>
             <v-card-text
               ><p class="balance">{{ formatCurrency(total) }}</p></v-card-text

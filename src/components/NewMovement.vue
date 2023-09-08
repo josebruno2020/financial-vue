@@ -152,9 +152,5 @@ async function saveMovement() {
 </script>
 
 <style scoped>
-.floating-button {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-}
+
 </style>

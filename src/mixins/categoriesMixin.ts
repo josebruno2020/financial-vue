@@ -3,7 +3,7 @@ import { createAxios } from '@/services/http'
 export const categoriesMixin = () => {
     const http = createAxios()
 
-    async function fetchCategories(categoryType: number = 1) {
+    async function fetchCategories(categoryType: number = null) {
         try {
             const { data } = await http.get(`/categories?type=${categoryType}`)
             return data.data
