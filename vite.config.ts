@@ -10,7 +10,16 @@ export default defineConfig({
   plugins: [
     vue(),
     vuetify({ autoImport: true }),
-    VitePWA({ registerType: 'autoUpdate' })
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.ico', 'img/*'],
+      manifest: {
+        name: 'Cotrole Financeiro',
+        short_name: 'ControleFinanciero',
+        description: 'Sua vida financeira em um só lugar',
+        theme_color: '#ffffff'
+      }
+    })
   ],
   resolve: {
     alias: {
