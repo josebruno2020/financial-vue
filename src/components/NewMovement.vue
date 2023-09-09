@@ -78,9 +78,9 @@
     </v-dialog>
 
     <v-btn
-      icon="mdi-plus"
+      icon="mdi-currency-usd"
       size="large"
-      color="success"
+      color="primary"
       class="floating-button"
       @click="dialog = true"
     ></v-btn>

@@ -4,7 +4,7 @@
 
     <v-row>
       <v-col cols="12" sm="12" md="4">
-        <v-text-field type="month" v-model="month"></v-text-field>
+        <v-text-field type="month" v-model="month" @input="changeMonth"></v-text-field>
       </v-col>
     </v-row>
 
@@ -33,8 +33,6 @@
         variant="tonal"
       >
         <template v-slot:title>Total entradas:</template>
-
-        <v-skeleton-loader color="secondary" type="paragraph"></v-skeleton-loader>
         <v-card-text>
           <p class="balance">{{ formatCurrency(monthTotals[0].total) }}</p></v-card-text
         >
@@ -49,8 +47,6 @@
         variant="tonal"
       >
         <template v-slot:title>Total Saídas:</template>
-
-        <v-skeleton-loader color="secondary" type="paragraph"></v-skeleton-loader>
         <v-card-text>
           <p v-if="monthTotals.length" class="balance">
             {{ formatCurrency(monthTotals[1].total) }}
@@ -125,6 +121,10 @@ onMounted(() => {
 function getMonth(): string {
   const monthMemory = storageService.get('month')
   return monthMemory ?? format(new Date(), 'yyyy-MM')
+}
+
+function changeMonth() {
+  storageService.set('month', month.value)
 }
 
 function reloadInfo() {

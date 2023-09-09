@@ -44,7 +44,7 @@
     <v-btn
       icon="mdi-plus"
       size="large"
-      color="success"
+      color="primary"
       class="floating-button"
       @click="openModal"
     ></v-btn>

@@ -11,6 +11,7 @@ import { ref } from 'vue'
 
 const show = ref(false)
 const text = ref('')
+const timeout = ref(2000)
 
 defineExpose({
   showSnackBar

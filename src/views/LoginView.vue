@@ -27,7 +27,7 @@
             </v-col>
 
             <v-col cols="12">
-              <v-btn type="submit" block color="primary" class="mt-2">Submit</v-btn>
+              <v-btn type="submit" block color="primary" class="mt-2">Entrar</v-btn>
             </v-col>
           </v-row>
         </v-container>
