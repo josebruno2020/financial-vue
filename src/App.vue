@@ -52,7 +52,8 @@
             </template>
             <v-list>
               <v-list-item>
-                <v-list-item-title>Teste</v-list-item-title>
+                <v-list-item-title class="item-button " @click="logout">Sair
+                </v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
@@ -94,12 +95,24 @@ function toRoute(name: string) {
   currentRoute.value = name
   router.push({ name })
 }
+
+function logout() {
+  storageService.remove('user')
+  storageService.remove('token')
+  storageService.remove('month')
+  storageService.remove('group')
+  router.push({ name: 'login' })
+}
 </script>
 
 <style>
 .floating-button {
   position: fixed;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+.item-button {
+  cursor: pointer;
 }
 </style>

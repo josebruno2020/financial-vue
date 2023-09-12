@@ -6,18 +6,23 @@ import type { MonthTotal } from '@/models/MonthTotal'
 
 const http = createAxios()
 
+const setMonthParam = (params: object): object => {
+  const month = storageService.get('month')
+  if (month) {
+    params = {
+      ...params,
+      month
+    }
+  }
+  return params
+}
+
 export const movementService = {
   async fetchTotalsCategory(type: number = 1): Promise<CategoryTotal[]> {
     let params = {
       type
     }
-    const month = storageService.get('month')
-    if (month) {
-      params = {
-        ...params,
-        month
-      }
-    }
+    params = setMonthParam(params)
     try {
       const { data } = await http.get('/movements/total-category', {
         params
@@ -29,13 +34,7 @@ export const movementService = {
   },
   async fetchMonthTotals(): Promise<MonthTotal[]> {
     let params = {}
-    const month = storageService.get('month')
-    if (month) {
-      params = {
-        ...params,
-        month
-      }
-    }
+    params = setMonthParam(params)
     try {
       const { data } = await http.get(`/movements/total-month`, {
         params
@@ -45,14 +44,16 @@ export const movementService = {
       console.log(err)
     }
   },
-  async fetchMovements({
-      categoryId,
+  async fetchMovements({ categoryId: category, type }): Promise<Movement[]> {
+    let params = {
+      category_id: category,
       type
-  }): Promise<Movement[]> {
+    }
+    params = setMonthParam(params)
     try {
-      const { data } = await http.get(
-        `/movements/current-month?category_id=${categoryId}&type=${type}`
-      )
+      const { data } = await http.get(`/movements/current-month`, {
+        params
+      })
       return data.data
     } catch (err) {
       console.log(err)
