@@ -60,6 +60,7 @@ import { currencyMixin } from '@/mixins/currencyMixin'
 import { useRoute } from 'vue-router'
 import ConfirmDialog from '@/components/ConfirmDialog.vue'
 import Snackbar from '@/components/Snackbar.vue'
+import { movementService } from '@/services/movement'
 
 const http = createAxios()
 const route = useRoute()
@@ -91,14 +92,10 @@ function formatMovementStatus(status: string): string {
 }
 
 async function fetchMovements() {
-  try {
-    const { data } = await http.get(
-      `/movements/current-month?category_id=${categoryId.value}&type=${type.value}`
-    )
-    movements.value = data.data
-  } catch (err) {
-    console.log(err)
-  }
+  movements.value = await movementService.fetchMovements({
+    categoryId: categoryId.value,
+    type: type.value
+  })
 }
 
 function confirmDeleteMovement(movementId: number) {
@@ -109,8 +106,8 @@ function confirmDeleteMovement(movementId: number) {
 async function deleteMovement() {
   try {
     await http.delete(`/movements/${id.value}`)
-    fetchMovements()
     snack.value.showSnackBar('Movimentação removida com sucesso!')
+    await fetchMovements()
   } catch (err) {
     console.log(err)
   }

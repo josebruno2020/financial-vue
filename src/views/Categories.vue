@@ -21,14 +21,14 @@
 
       <v-list class="mb-5">
         <v-list-item v-for="category in categories" :key="category.id" class="px-0">
-          <v-card :title="category.name" variant="tonal" elevation="10">
+          <v-card
+            :title="category.name"
+            variant="outlined"
+            elevation="10"
+            @click="openEditModal(category)"
+            :disabled="!category.user"
+          >
             <v-card-actions>
-              <v-btn
-                icon="mdi-pencil"
-                size="small"
-                :disabled="!category.user"
-                @click="openEditModal(category)"
-              ></v-btn>
               <v-btn
                 icon="mdi-trash-can"
                 size="small"

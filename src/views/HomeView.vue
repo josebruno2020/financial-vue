@@ -15,7 +15,7 @@
       variant="tonal"
       color="primary"
     >
-      <template v-slot:title> Seu saldo até agora:</template>
+      <template v-slot:title> Seu saldo <strong>total</strong> até agora:</template>
       <v-card-text>
         <p class="balance">{{ formatCurrency(balance) }}</p></v-card-text
       >
@@ -55,35 +55,51 @@
       </v-card>
     </div>
 
-    <h3 class="my-4" v-if="totals.length">Gastos por Categoria</h3>
+    <h3 class="my-4" v-if="!loading">Gastos por Categoria</h3>
 
     <v-sheet class="totals" elevation="8">
       <v-slide-group show-arrows class="pa-4">
         <v-slide-group-item v-for="({ name, total, id }, index) in totals" :key="index">
-          <v-card width="200" color="grey-lighten-1" :class="['ma-4']" @click="clickOnListCard(id)" variant="tonal">
+          <v-card
+            width="200"
+            color="grey-lighten-1"
+            :class="['ma-4']"
+            @click="clickOnListCard(id)"
+            variant="tonal"
+          >
             <template v-slot:title>{{ name }}</template>
             <v-card-text
               ><p class="balance">{{ formatCurrency(total) }}</p></v-card-text
             >
           </v-card>
         </v-slide-group-item>
+        <v-card-text v-if="!totals.length && !loading">Nenhum registro encontrado</v-card-text>
       </v-slide-group>
     </v-sheet>
 
     <v-progress-linear color="blue-lighten-3" indeterminate v-if="loading"></v-progress-linear>
 
-    <h3 class="my-4" v-if="inflowTotals.length">Entradas por Categoria</h3>
+    <h3 class="my-4" v-if="!loading">Entradas por Categoria</h3>
 
     <v-sheet class="totals" elevation="8">
       <v-slide-group show-arrows class="pa-4">
         <v-slide-group-item v-for="({ name, total, id }, index) in inflowTotals" :key="index">
-          <v-card width="200" color="grey-lighten-1" :class="['ma-4']" @click="clickOnListCard(id)" variant="tonal">
+          <v-card
+            width="200"
+            color="grey-lighten-1"
+            :class="['ma-4']"
+            @click="clickOnListCard(id)"
+            variant="tonal"
+          >
             <template v-slot:title>{{ name }}</template>
             <v-card-text
               ><p class="balance">{{ formatCurrency(total) }}</p></v-card-text
             >
           </v-card>
         </v-slide-group-item>
+        <v-card-text v-if="!inflowTotals.length && !loading"
+          >Nenhum registro encontrado</v-card-text
+        >
       </v-slide-group>
     </v-sheet>
 
@@ -101,6 +117,7 @@ import type { CategoryTotal } from '@/models/CategoryTotal'
 import type { MonthTotal } from '@/models/MonthTotal'
 import { format } from 'date-fns'
 import { storageService } from '@/services/storage'
+import { movementService } from '@/services/movement'
 
 const http = createAxios()
 const month = ref(getMonth())
@@ -125,9 +142,11 @@ function getMonth(): string {
 
 function changeMonth() {
   storageService.set('month', month.value)
+  reloadInfo()
 }
 
 function reloadInfo() {
+  loading.value = true
   Promise.all([fetchBalance(), fetchTotals(), fetchInflowTotals(), fetchMonthTotals()]).finally(
     () => (loading.value = false)
   )
@@ -143,30 +162,15 @@ async function fetchBalance() {
 }
 
 async function fetchTotals() {
-  try {
-    const { data } = await http.get('/movements/total-category')
-    totals.value = data.data.totals
-  } catch (err) {
-    console.log(err)
-  }
+  totals.value = await movementService.fetchTotalsCategory()
 }
 
 async function fetchInflowTotals() {
-  try {
-    const { data } = await http.get(`/movements/total-category?type=0`)
-    inflowTotals.value = data.data.totals
-  } catch (err) {
-    console.log(err)
-  }
+  inflowTotals.value = await movementService.fetchTotalsCategory(0)
 }
 
 async function fetchMonthTotals() {
-  try {
-    const { data } = await http.get(`/movements/total-month`)
-    monthTotals.value = data.data
-  } catch (err) {
-    console.log(err)
-  }
+  monthTotals.value = await movementService.fetchMonthTotals()
 }
 
 function clickOnMainCard() {

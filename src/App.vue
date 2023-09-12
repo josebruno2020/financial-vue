@@ -1,7 +1,13 @@
 <template>
   <v-card>
     <v-layout>
-      <v-navigation-drawer v-model="drawer" rail permanent expand-on-hover v-if="currentRoute !== 'login'">
+      <v-navigation-drawer
+        v-model="drawer"
+        rail
+        permanent
+        expand-on-hover
+        v-if="currentRoute !== 'login'"
+      >
         <v-list>
           <v-list-item
             v-if="loggedUser"
@@ -45,7 +51,7 @@
               <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
             </template>
             <v-list>
-              <v-list-item >
+              <v-list-item>
                 <v-list-item-title>Teste</v-list-item-title>
               </v-list-item>
             </v-list>
@@ -60,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, ref, watch} from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storageService } from '@/services/storage'
 
@@ -71,17 +77,14 @@ const currentRoute = ref('')
 const router = useRouter()
 const loggedUser = ref(null)
 
-watch(route, (to, _) => {
+watch(route, (to) => {
   currentRoute.value = to.name
-  if (currentRoute.value !== 'login'&& !loggedUser.value) {
+  if (currentRoute.value !== 'login' && !loggedUser.value) {
     getUser()
   }
 })
 
-onMounted(() => {
-  console.log('to aqui')
-  getUser()
-})
+onMounted(() => getUser())
 
 function getUser() {
   loggedUser.value = storageService.get('user')
